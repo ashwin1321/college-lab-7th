@@ -25,6 +25,10 @@ public class GuiForm {
         female.setBounds(200, 80, 80, 50);
         JCheckBox others = new JCheckBox("others");
         others.setBounds(290, 80, 80, 50);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(male);
+        bg.add(female);
+        bg.add(others);
         frame.add(male);
         frame.add(female);
         frame.add(others);
@@ -96,11 +100,11 @@ public class GuiForm {
         JRadioButton master = new JRadioButton("Masters");
         master.setBounds(150, 390, 80, 30);
 
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(SLC);
-        bg.add(bachelor);
-        bg.add(highSchool);
-        bg.add(master);
+        ButtonGroup bgg = new ButtonGroup();
+        bgg.add(SLC);
+        bgg.add(bachelor);
+        bgg.add(highSchool);
+        bgg.add(master);
         frame.add(SLC);
         frame.add(highSchool);
         frame.add(bachelor);
