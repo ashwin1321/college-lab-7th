@@ -6,8 +6,8 @@ public class AddC extends UnicastRemoteObject implements add1 {
         super();
     }
 
-    public int add(int x, int y){
-        return x + y;
+    public int product(int x, int y){
+        return x * y;
     }
     
 }
