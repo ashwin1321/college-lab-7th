@@ -1,4 +1,3 @@
-
 //For individual JDBC API classes imports:
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,67 +6,64 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class jdbcTest {
-    public static void main(String[] args) {
-        System.out.println("Inside the Main function");
-        String url = "jdbc:mysql://localhost:3306/mysql_database";
-        String dusername = "root";
-        String dpassword = "";
 
+  public static void main(String[] args) {
+    System.out.println("Inside the Main function");
+    String url = "jdbc:mysql://localhost:3306/mysql_database";
+    String dusername = "root";
+    String dpassword = "";
 
-        // using try-with-resources to avoid closing resources (boilerplate code)
+    // using try-with-resources to avoid closing resources (boilerplate code)
 
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager
-                .getConnection(url, dusername, dpassword);
+    // Step 1: Establishing a Connection
+    try (
+      Connection connection = DriverManager.getConnection(
+        url,
+        dusername,
+        dpassword
+      );
+      // Step 2:Create a statement using connection object
+      Statement stmt = connection.createStatement();
+      // Step 3: Execute the query or update query
+      ResultSet rs = stmt.executeQuery(
+        "select id,name,email,country,password from Users"
+      )
+    ) {
+      // Step 4: Process the ResultSet object.
+      while (rs.next()) {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String email = rs.getString("email");
+        String country = rs.getString("country");
+        String password = rs.getString("password");
+        System.out.println(
+          id + "," + name + "," + email + "," + country + "," + password
+        );
+      }
+    } catch (SQLException e) {
+      System.out.println("An error occurred while connecting MySQL databse");
 
-                // Step 2:Create a statement using connection object
-                Statement stmt = connection.createStatement();
-
-                // Step 3: Execute the query or update query
-                ResultSet rs = stmt.executeQuery("select id,name,email,country,password from Users")) {
-
-            // Step 4: Process the ResultSet object.
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                String country = rs.getString("country");
-                String password = rs.getString("password");
-                System.out.println(id + "," + name + "," + email + "," +
-
-                        country + "," + password);
-
-            }
-        } catch (SQLException e) {
-            System.out.println("An error occurred while connecting MySQL databse");
-
-            e.printStackTrace();
-        }
-        // Step 5: try-with-resource statement will auto close the connection.
-        finally {
-            System.out.println("Finally Done, Phew ! ");
-        }
+      e.printStackTrace();
+    } finally { // Step 5: try-with-resource statement will auto close the connection.
+      System.out.println("Finally Done, Phew ! ");
     }
+  }
 
-    public static void printSQLException(SQLException ex) {
-        for (Throwable e : ex) {
-            if (e instanceof SQLException) {
-                e.printStackTrace(System.err);
-                System.err.println("SQLState: " + ((SQLException)
+  public static void printSQLException(SQLException ex) {
+    for (Throwable e : ex) {
+      if (e instanceof SQLException) {
+        e.printStackTrace(System.err);
+        System.err.println("SQLState: " + ((SQLException) e).getSQLState());
 
-                e).getSQLState());
+        System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
 
-                System.err.println("Error Code: " + ((SQLException)
-
-                e).getErrorCode());
-
-                System.err.println("Message: " + e.getMessage());
-                Throwable t = ex.getCause();
-                while (t != null) {
-                    System.out.println("Cause: " + t);
-                    t = t.getCause();
-                }
-            }
+        System.err.println("Message: " + e.getMessage());
+        Throwable t = ex.getCause();
+        while (t != null) {
+          System.out.println("Cause: " + t);
+          t = t.getCause();
         }
+      }
     }
+  }
 }
